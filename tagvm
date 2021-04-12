@@ -1,0 +1,19 @@
+version: 1
+flow:
+  flow_start:
+    next: action1
+  action1:
+    action: Rename-vSphere-VM
+    next: switchaction
+  switchaction:
+    switch:
+      ${tagControl == "TagVM"}: action2
+      ${tagControl != "TagVM"}: action3
+  action2:
+    action: Tag-VMs-With-Object
+    next: action3
+  action3:
+    action: Dump-the-Payload
+    next: flow_end
+onError:
+  action: Report-Errors
